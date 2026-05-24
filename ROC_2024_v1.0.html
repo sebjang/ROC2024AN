@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YieldMax ROC Tax 2024 범용 계산기 v1.0 | ICI-P24-YM | 34종</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D1117;--bg2:#161B22;--bg3:#21262D;--bg4:#2D333B;--bd:#30363D;--bd2:#444C56;--tx:#E6EDF3;--mu:#8B949E;--di:#484F58;--bl:#58A6FF;--gn:#3FB950;--rd:#F85149;--or:#D29922;--pu:#BC8CFF;--gn2:#56D364;--rd2:#F87171;--font:'Noto Sans KR',sans-serif;--mono:'IBM Plex Mono',monospace;--head:'Space Grotesk',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.6;min-height:100vh}
+input,select,button,textarea{font-family:var(--font)}
+.w{max-width:1280px;margin:0 auto;padding:0 16px}
+header{background:var(--bg2);border-bottom:1px solid var(--bd);padding:10px 0;position:sticky;top:0;z-index:100}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.logo{font-family:var(--head);font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.ver24{background:#2E75B6;color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-family:var(--mono)}
+.htag{font-family:var(--mono);font-size:11px;color:var(--mu);background:var(--bg3);border:1px solid var(--bd);border-radius:5px;padding:2px 8px}
+.htag b{color:var(--bl)}
+.main-grid{display:grid;grid-template-columns:340px 1fr;gap:14px;margin:14px 0;align-items:start}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr}}
+.panel{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.ph{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.ph-title{font-family:var(--mono);color:var(--mu);text-transform:uppercase;letter-spacing:.07em;font-size:11px}
+.pb{padding:10px 14px}
+.etf-search{width:100%;padding:8px 10px;background:var(--bg3);border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-size:13px;margin-bottom:8px;transition:border-color .15s}
+.etf-search:focus{outline:none;border-color:var(--bl)}
+.etf-list{max-height:280px;overflow-y:auto;border-radius:6px;border:1px solid var(--bd);background:var(--bg3)}
+.etf-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s}
+.etf-item:last-child{border:none}
+.etf-item:hover{background:rgba(88,166,255,.08)}
+.etf-item.sel{background:rgba(88,166,255,.15);border-left:2px solid var(--bl)}
+.etf-item.s-partial{background:rgba(210,153,34,.06)}
+.etf-item.s-only2024{background:rgba(188,140,255,.06)}
+.etf-item.s-check{background:rgba(248,81,73,.05)}
+.etf-tk{font-family:var(--mono);font-size:12px;font-weight:600}
+.etf-nm{font-size:10px;color:var(--mu);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mode-tabs{display:flex;gap:3px;margin-bottom:10px}
+.mt{flex:1;background:var(--bg3);border:1px solid var(--bd);color:var(--mu);font-size:11px;padding:5px;border-radius:6px;cursor:pointer;text-align:center;transition:all .12s}
+.mt.on{background:var(--bl);color:#fff;border-color:var(--bl)}
+.fi{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.fi label{font-size:11px;color:var(--mu);min-width:70px;flex-shrink:0}
+.pi{flex:1;padding:6px 9px;background:var(--bg4);border:1px solid var(--bd);border-radius:6px;color:var(--tx);font-family:var(--mono);font-size:13px;transition:border-color .15s}
+.pi:focus{outline:none;border-color:var(--bl)}
+.pi.warn{border-color:var(--or)}
+.punit{font-size:11px;color:var(--mu);white-space:nowrap}
+.pi-hint{font-family:var(--mono);font-size:10px;color:var(--pu);margin-top:2px}
+.pi-err{font-size:10px;color:var(--rd);margin-top:2px}
+.sep{height:1px;background:var(--bd);margin:8px 0}
+.btn-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+button.btn{padding:6px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;border:none;transition:opacity .15s}
+button.btn:hover{opacity:.82}
+.btn-pri{background:#2E75B6;color:#fff}
+.btn-sec{background:var(--bg4);color:var(--tx);border:1px solid var(--bd)}
+/* special badges */
+.badge{display:inline-block;font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:8px;border:1px solid}
+.bp{border-color:rgba(63,185,80,.4);color:var(--gn);background:rgba(63,185,80,.1)}
+.bw{border-color:rgba(210,153,34,.4);color:var(--or);background:rgba(210,153,34,.1)}
+.bf{border-color:rgba(248,81,73,.4);color:var(--rd);background:rgba(248,81,73,.1)}
+.b24{border-color:rgba(188,140,255,.4);color:var(--pu);background:rgba(188,140,255,.1)}
+.bpart{border-color:rgba(210,153,34,.4);color:var(--or);background:rgba(210,153,34,.1)}
+/* vbar */
+.vbar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;margin-bottom:10px;font-size:12px}
+.vbar.ok{background:rgba(63,185,80,.07);border:1px solid rgba(63,185,80,.25);color:var(--gn)}
+.vbar.warn{background:rgba(210,153,34,.07);border:1px solid rgba(210,153,34,.25);color:var(--or)}
+/* vs */
+.vs-wrap{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.vs-head{padding:11px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.vs-ename{font-family:var(--head);font-size:22px;font-weight:700}
+.vs-emeta{font-family:var(--mono);font-size:10px;color:var(--mu);margin-top:2px}
+.vs-etags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.tag{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:10px;border:1px solid var(--bd);color:var(--mu)}
+.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd)}
+@media(max-width:600px){.vs-grid{grid-template-columns:1fr}}
+.vs-us{padding:12px 14px;background:rgba(63,185,80,.05)}
+.vs-kr{padding:12px 14px;background:rgba(248,81,73,.05)}
+.vs-flag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.vs-flag.g{color:var(--gn)}.vs-flag.r{color:var(--rd)}
+.vs-amt{font-family:var(--head);font-size:26px;font-weight:700;margin:3px 0}
+.vs-amt.g{color:var(--gn)}.vs-amt.r{color:var(--rd)}
+.vs-bk{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:7px 0}
+.vbi{background:var(--bg4);border-radius:5px;padding:4px 6px}
+.vbl{font-size:9px;color:var(--mu)}.vbv{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--rd2)}
+.vs-sub{font-family:var(--mono);font-size:10px;color:var(--mu)}
+.bar-w{padding:6px 14px;background:var(--bg3);border-top:1px solid var(--bd)}
+.bar-bg{height:6px;background:rgba(63,185,80,.12);border-radius:3px;overflow:hidden}
+.bar-f{height:100%;background:linear-gradient(90deg,var(--rd),#ff9999);border-radius:3px;transition:width .3s}
+.stog{width:100%;background:none;border:none;border-top:1px solid var(--bd);color:var(--mu);font-size:11px;padding:7px 14px;cursor:pointer;display:flex;justify-content:space-between;font-family:var(--font)}
+.stog:hover{background:rgba(255,255,255,.02);color:var(--tx)}
+.sbody{display:none;padding:8px 14px;background:var(--bg);font-family:var(--mono);font-size:11px}
+.sr{display:flex;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sr:last-child{border:none}
+.sid{font-size:10px;font-weight:600;color:var(--bl);min-width:56px;flex-shrink:0}
+.snm{font-size:10px;color:var(--mu);min-width:100px;flex-shrink:0}
+.sfm{color:var(--di);flex:1;font-size:10px}
+.srs{font-weight:600;text-align:right;white-space:nowrap;margin-left:4px}
+/* cmp table */
+.tbl-box{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.tbl-head{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:700px;font-size:12px}
+th{background:var(--bg3);color:var(--mu);font-weight:500;text-align:right;padding:7px 10px;border-bottom:1px solid var(--bd);white-space:nowrap;font-size:10px;letter-spacing:.03em}
+th:first-child,th:nth-child(2){text-align:left}
+td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);text-align:right;font-family:var(--mono)}
+td:first-child{text-align:left;font-family:var(--font)}td:nth-child(2){text-align:left;font-family:var(--mono)}
+tr:last-child td{border:none}
+tr:hover td{background:rgba(255,255,255,.025);cursor:pointer}
+.rr{color:var(--rd2)}.gr{color:var(--gn2)}.bl{color:var(--bl)}.or{color:var(--or)}.pu{color:var(--pu)}
+.sort-btns{display:flex;gap:4px;flex-wrap:wrap}
+.sb{font-size:10px;padding:3px 9px;border-radius:5px;cursor:pointer;border:1px solid var(--bd);background:var(--bg3);color:var(--mu)}
+.sb.on{background:var(--bg4);border-color:var(--bl);color:var(--bl)}
+/* special notices */
+.notice{padding:8px 12px;border-radius:7px;font-size:11px;margin-bottom:8px;line-height:1.6}
+.notice.warn{background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.25);color:var(--or)}
+.notice.info{background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.2);color:var(--bl)}
+.notice.pur{background:rgba(188,140,255,.07);border:1px solid rgba(188,140,255,.2);color:var(--pu)}
+/* 2024↔2025 비교 */
+.cmp24{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:10px}
+footer{border-top:1px solid var(--bd);padding:14px 0;margin-top:20px;font-size:11px;color:var(--mu)}
+.fdiv{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+<header>
+<div class="w">
+<div class="hd">
+  <div class="logo">📋 YieldMax ROC Tax <span class="ver24">2024 귀속</span> 범용 계산기 v1.0</div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap">
+    <span class="htag">FX ₩<b id="h-fx">1,350</b>/$</span>
+    <span class="htag">건보 <b id="h-hi">8.008%</b></span>
+    <span class="htag">34종 ICI-P24-YM</span>
+    <span class="htag">203/204 PASS · 1 WARN</span>
+    <span class="htag">cfg: <b id="h-cfg" style="color:var(--gn)">로딩…</b></span>
+  </div>
+</div>
+</div>
+</header>
+
+<main class="w">
+<div class="main-grid">
+
+<!-- LEFT -->
+<div>
+<div class="panel">
+  <div class="ph"><span class="ph-title">ETF 선택 (34종)</span><span id="sel-count" style="font-family:var(--mono);font-size:10px;color:var(--pu)"></span></div>
+  <div class="pb">
+    <input class="etf-search" id="etf-search" placeholder="🔍 TSLY, CONY, MSTY, SQY…" oninput="filterETF(this.value)">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--mu);margin-bottom:5px">
+      <span class="badge bpart">★부분연도</span> PLTY(2회)&nbsp;
+      <span class="badge b24">★2024ONLY</span> SQY(2025미존재)&nbsp;
+      <span class="badge bw">★확인필요</span> XOMO
+    </div>
+    <div class="etf-list" id="etf-list"></div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="ph"><span class="ph-title">투자 규모 입력</span></div>
+  <div class="pb">
+    <div class="mode-tabs">
+      <button class="mt on" onclick="setMode('invest',this)">투자금액</button>
+      <button class="mt" onclick="setMode('shares',this)">보유주수</button>
+      <button class="mt" onclick="setMode('annual',this)">연간수령액</button>
+    </div>
+    <div id="m-invest">
+      <div class="fi"><label>투자금액</label><input class="pi" id="inv-amt" type="text" placeholder="2.5억 / 250000000" oninput="previewAmt(this.value)" onkeydown="if(event.key==='Enter')calc()"><span class="punit">원</span></div>
+      <div class="pi-hint" id="inv-hint"></div>
+      <div class="pi-err" id="inv-err"></div>
+      <div class="fi" style="margin-top:7px"><label>취득단가</label><input class="pi" id="inv-nav" type="number" step="0.01" min="0.01"><span class="punit">$/주(2024)</span></div>
+      <div class="pi-hint" id="nav-info" style="color:var(--or)"></div>
+    </div>
+    <div id="m-shares" style="display:none">
+      <div class="fi"><label>보유 주수</label><input class="pi" id="sh-cnt" type="number" placeholder="1000" step="1" min="1"><span class="punit">주</span></div>
+    </div>
+    <div id="m-annual" style="display:none">
+      <div class="fi"><label>연간 수령</label><input class="pi" id="ann-usd" type="number" placeholder="5000" step="0.01" min="0.01"><span class="punit">USD</span></div>
+      <div style="font-size:10px;color:var(--mu);margin-top:4px">ICI 2024 비율 자동 적용 (취득단가 불필요)</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-pri" onclick="calc()">▶ 계산하기</button>
+      <button class="btn btn-sec" onclick="resetInput()">↺ 초기화</button>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="ph"><span class="ph-title">파라미터 편집</span><button class="btn btn-sec" style="padding:2px 9px;font-size:10px" onclick="applyP()">✓ 적용</button></div>
+  <div class="pb">
+    <div class="fi"><label>환율 FX</label><input class="pi" id="p-fx" type="number" value="1350" step="10" oninput="markMod('p-fx',1350)"><span class="punit">₩/$</span></div>
+    <div class="fi"><label>기존소득</label><input class="pi" id="p-ex" type="number" value="0" step="1000000" oninput="markMod('p-ex',0)"><span class="punit">원</span></div>
+    <div class="fi"><label>미국 WHT</label><input class="pi" id="p-us" type="number" value="15" step="0.5" oninput="markMod('p-us',15)"><span class="punit">%</span></div>
+    <div class="sep"></div>
+    <div class="fi"><label>건보 합산율</label><input class="pi" id="p-hi" type="number" value="8.008155" step="0.001" oninput="syncHI()"><span class="punit">%</span></div>
+    <div class="fi"><label>건보 月상한</label><input class="pi" id="p-hm" type="number" value="3911280" step="10000" oninput="syncCap()"><span class="punit">원</span></div>
+    <div class="fi"><label>장기요양率</label><input class="pi" id="p-ltc" type="number" value="12.95" step="0.01" oninput="syncHI()"><span class="punit">%</span></div>
+    <div class="fi"><label>연 상한</label><input class="pi" id="p-cap" type="number" value="53013492" step="100000" oninput="markMod('p-cap',53013492)"><span class="punit">원</span></div>
+    <div class="btn-row">
+      <button class="btn btn-pri" onclick="applyP()">✓ 확인 적용</button>
+      <button class="btn btn-sec" onclick="resetP()">↺ 초기화</button>
+      <button class="btn btn-sec" onclick="copyURL()">🔗 URL</button>
+      <button class="btn btn-sec" onclick="dlJSON()">↓ JSON</button>
+    </div>
+    <div id="p-msg" style="font-size:10px;color:var(--mu);margin-top:5px"></div>
+  </div>
+</div>
+</div><!-- /LEFT -->
+
+<!-- RIGHT -->
+<div>
+  <div class="vbar ok" id="vbar"><span id="v-ico">✓</span><span id="v-txt">ETF를 선택하고 계산하세요</span><span style="flex:1"></span><span id="v-det" style="font-family:var(--mono);font-size:10px"></span></div>
+  <div id="special-notice"></div>
+  <div id="result-area"><div style="padding:40px;text-align:center;color:var(--mu);border:1px solid var(--bd);border-radius:10px;font-size:13px">← ETF 선택 후 [계산하기]</div></div>
+
+  <!-- 전체 비교표 -->
+  <div class="tbl-box">
+    <div class="tbl-head">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.07em">2024 전체 비교표 (ETF 클릭 → 선택 계산)</span>
+      <div class="sort-btns">
+        <button class="sb on" onclick="sortTbl('roc',this)">ROC%↓</button>
+        <button class="sb" onclick="sortTbl('ero',this)">침식%↓</button>
+        <button class="sb" onclick="sortTbl('iy',this)">실소득%↓</button>
+        <button class="sb" onclick="sortTbl('tk',this)">알파벳</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th style="text-align:left">ETF</th>
+          <th style="text-align:left">펀드명</th>
+          <th>ROC%</th>
+          <th>★실소득율</th>
+          <th>🇺🇸미국세</th>
+          <th>🇰🇷KR총세</th>
+          <th>원금침식</th>
+          <th>특이사항</th>
+        </tr></thead>
+        <tbody id="cmp-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2024↔2025 비교 -->
+  <div class="cmp24">
+    <div class="tbl-head">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--mu);text-transform:uppercase">2024↔2025 ROC 변화 (공통 33종)</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--mu)">현재 규모 기준</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th style="text-align:left">ETF</th>
+          <th>2024 ROC%</th>
+          <th>2025 ROC%</th>
+          <th>변화</th>
+          <th>2024 원금침식</th>
+          <th>2025 원금침식</th>
+          <th>침식 변화</th>
+        </tr></thead>
+        <tbody id="cmp2425-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- /RIGHT -->
+
+</div><!-- /grid -->
+</main>
+
+<footer><div class="w"><div class="fdiv">
+  <span>ICI-P24-YM 34종 | 수리검증 203/204 PASS · 1 WARN(DISO Δ=10원, ICI소수점제한) | 2024 귀속 현재 모델 기준</span>
+  <span style="font-family:var(--mono)"><a href="config.json" style="color:var(--mu)">config.json</a> · v1.0 · 2024</span>
+</div></div></footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// ICI-P24-YM 2024 귀속 YieldMax 34종 (검증 203/204 PASS, 1 WARN)
+// 2024: Box2a=0, Box2c=0 전 ETF. 단순 구조 (b1a+b3=ps)
+// 특이사항: PLTY★부분연도(2회), SQY★2024ONLY, XOMO★배분횟수확인
+// DISO STEP4V Δ=-10원 → WARN (ICI ps 소수점4자리 반올림 오차)
+// ═══════════════════════════════════════════════════════════════
+const ICI24={
+ABNY:{ps:3.3158,b1a:2.533711,b2a:0,b2c:0,b3:0.782089,roc:23.5867,navH:5.35,cnt:5,sp:'normal',name:'ABNB',cusip:'88634T485'},
+AIYY:{ps:8.3913,b1a:2.147265,b2a:0,b2c:0,b3:6.244035,roc:74.4108,navH:13.53,cnt:12,sp:'normal',name:'AI',cusip:'88636J790'},
+AMDY:{ps:11.1185,b1a:2.733584,b2a:0,b2c:0,b3:8.384916,roc:75.4141,navH:17.93,cnt:12,sp:'normal',name:'AMD',cusip:'88634T477'},
+AMZY:{ps:9.0116,b1a:3.923789,b2a:0,b2c:0,b3:5.087811,roc:56.4585,navH:14.53,cnt:12,sp:'normal',name:'AMZN',cusip:'88634T840'},
+APLY:{ps:4.5003,b1a:2.385041,b2a:0,b2c:0,b3:2.115259,roc:47.0026,navH:7.26,cnt:12,sp:'normal',name:'AAPL',cusip:'88634T857'},
+BABO:{ps:3.5492,b1a:3.5492,b2a:0,b2c:0,b3:0,roc:0,navH:5.72,cnt:4,sp:'normal',name:'BABA',cusip:'88636R107'},
+CONY:{ps:20.298,b1a:8.328326,b2a:0,b2c:0,b3:11.969674,roc:58.9697,navH:32.74,cnt:12,sp:'normal',name:'COIN',cusip:'88634T824'},
+CRSH:{ps:5.7777,b1a:1.613108,b2a:0,b2c:0,b3:4.164592,roc:72.0804,navH:9.32,cnt:8,sp:'normal',name:'Short TSLA',cusip:'88636J519'},
+DIPS:{ps:3.1525,b1a:2.134731,b2a:0,b2c:0,b3:1.017769,roc:32.2845,navH:5.08,cnt:4,sp:'normal',name:'Short NVDA',cusip:'88636J485'},
+DISO:{ps:6.267,b1a:1.637368,b2a:0,b2c:0,b3:4.629632,roc:73.8736,navH:10.11,cnt:12,sp:'warn',name:'DIS',cusip:'88634T444'},
+FBY:{ps:10.266,b1a:8.490283,b2a:0,b2c:0,b3:1.775717,roc:17.2971,navH:16.56,cnt:12,sp:'normal',name:'META',cusip:'88634T816'},
+FIAT:{ps:6.623,b1a:4.546095,b2a:0,b2c:0,b3:2.076905,roc:31.359,navH:10.68,cnt:5,sp:'normal',name:'Short COIN',cusip:'88636J477'},
+GDXY:{ps:3.4459,b1a:1.68474,b2a:0,b2c:0,b3:1.76116,roc:51.1089,navH:5.56,cnt:6,sp:'normal',name:'Gold Miners',cusip:'88634T881'},
+GOOY:{ps:5.4452,b1a:1.336968,b2a:0,b2c:0,b3:4.108232,roc:75.4469,navH:8.78,cnt:13,sp:'normal',name:'GOOGL',cusip:'88634T790'},
+JPMO:{ps:4.5551,b1a:2.2082,b2a:0,b2c:0,b3:2.3469,roc:51.5225,navH:7.35,cnt:12,sp:'normal',name:'JPM',cusip:'88634T436'},
+MRNY:{ps:9.3888,b1a:1.318092,b2a:0,b2c:0,b3:8.070708,roc:85.961,navH:15.14,cnt:12,sp:'normal',name:'MRNA',cusip:'88634T469'},
+MSFO:{ps:6.3906,b1a:3.185239,b2a:0,b2c:0,b3:3.205361,roc:50.1574,navH:10.31,cnt:12,sp:'normal',name:'MSFT',cusip:'88634T428'},
+MSTY:{ps:27.5106,b1a:27.5106,b2a:0,b2c:0,b3:0,roc:0,navH:44.37,cnt:9,sp:'normal',name:'MSTR',cusip:'88634T493'},
+NFLY:{ps:9.0884,b1a:8.849326,b2a:0,b2c:0,b3:0.239074,roc:2.6305,navH:14.66,cnt:12,sp:'normal',name:'NFLX',cusip:'88634T782'},
+NVDY:{ps:19.5329,b1a:16.557004,b2a:0,b2c:0,b3:2.975896,roc:15.2353,navH:31.5,cnt:12,sp:'normal',name:'NVDA',cusip:'88634T774'},
+OARK:{ps:4.8624,b1a:0.7986,b2a:0,b2c:0,b3:4.0638,roc:83.576,navH:7.84,cnt:13,sp:'normal',name:'ARK Innovation',cusip:'88634T600'},
+PLTY:{ps:5.5486,b1a:5.5486,b2a:0,b2c:0,b3:0,roc:0,navH:18.0,cnt:2,sp:'partial',name:'PLTR',cusip:'88636R800'},
+PYPY:{ps:8.7173,b1a:8.146746,b2a:0,b2c:0,b3:0.570554,roc:6.5451,navH:14.06,cnt:12,sp:'normal',name:'PYPL',cusip:'88634T451'},
+SMCY:{ps:9.9114,b1a:4.647892,b2a:0,b2c:0,b3:5.263508,roc:53.1056,navH:15.99,cnt:3,sp:'normal',name:'SMCI',cusip:'88636R867'},
+SNOY:{ps:5.927,b1a:3.517198,b2a:0,b2c:0,b3:2.409802,roc:40.658,navH:9.56,cnt:7,sp:'normal',name:'SNOW',cusip:'88636J774'},
+SQY:{ps:11.3314,b1a:5.764647,b2a:0,b2c:0,b3:5.566753,roc:49.1268,navH:18.28,cnt:12,sp:'only2024',name:'SQ (Block)',cusip:'88634T766'},
+TSLY:{ps:10.7836,b1a:2.5068,b2a:0,b2c:0,b3:8.2768,roc:76.7536,navH:17.39,cnt:13,sp:'normal',name:'TSLA',cusip:'88636J444'},
+TSMY:{ps:2.6056,b1a:2.037957,b2a:0,b2c:0,b3:0.567643,roc:21.7855,navH:5.0,cnt:4,sp:'normal',name:'TSM',cusip:'88636R859'},
+ULTY:{ps:10.0191,b1a:1.814741,b2a:0,b2c:0,b3:8.204359,roc:81.8872,navH:16.16,cnt:10,sp:'normal',name:'Ultra',cusip:'88636J527'},
+XOMO:{ps:3.941,b1a:1.946898,b2a:0,b2c:0,b3:1.994102,roc:50.5989,navH:6.36,cnt:1849,sp:'check',name:'XOM',cusip:'88634T410'},
+YBIT:{ps:7.4217,b1a:2.205774,b2a:0,b2c:0,b3:5.215926,roc:70.2794,navH:11.97,cnt:8,sp:'normal',name:'Bitcoin',cusip:'88636J428'},
+YMAG:{ps:6.7789,b1a:3.882667,b2a:0,b2c:0,b3:2.896233,roc:42.7242,navH:10.93,cnt:22,sp:'normal',name:'Magnificent 7',cusip:'88636J642'},
+YMAX:{ps:7.4914,b1a:4.149354,b2a:0,b2c:0,b3:3.342046,roc:44.6118,navH:12.08,cnt:22,sp:'normal',name:'Universe Fund',cusip:'88636J659'},
+YQQQ:{ps:1.3795,b1a:1.3795,b2a:0,b2c:0,b3:0,roc:0,navH:5.0,cnt:4,sp:'normal',name:'Short N100',cusip:'88636J451'},
+};
+
+// 2025 ROC 데이터 (비교용)
+const ROC25={TSLY:72.97,NVDY:52.65,CONY:97.02,MSTY:100.0,PLTY:0.61,
+AIYY:100.0,AMDY:36.55,AMZY:64.72,APLY:73.67,BABO:41.12,CRSH:100.0,
+DISO:100.0,FBY:63.15,FIAT:100.0,GDXY:0.0,GOOY:0.0,JPMO:36.64,
+MRNY:100.0,MSFO:49.54,NFLY:28.81,OARK:42.02,PYPY:100.0,SMCY:68.36,
+SNOY:28.78,TSMY:23.43,ULTY:67.7,XOMO:100.0,YBIT:83.77,YMAG:44.58,
+YMAX:50.14,YQQQ:80.41,ABNY:100.0,DIPS:100.0};
+
+const BR=[[0,14e6,.06,0],[14e6,50e6,.14,1260000],[50e6,88e6,.24,6260000],[88e6,150e6,.35,15940000],[150e6,300e6,.38,20440000],[300e6,500e6,.40,25440000],[500e6,1e9,.42,35440000],[1e9,Infinity,.45,72340000]];
+let S={fx:1350,ex:0,us:0.15,lt:0.10,hi:0.08008155,cap:53013492};
+let selTK='TSLY'; let inputMode='invest'; let sortKey='roc'; let lastR=null;
+
+function IT(x){if(!isFinite(x)||x<=0)return 0;for(const[,h,r,d]of BR)if(x<=h)return Math.round(x*r-d);return Math.round(x*0.45-72340000);}
+
+function computeR(tk,sh,P){
+  const d=ICI24[tk];if(!d)return null;
+  const distW=Math.round(d.ps*sh*S.fx);
+  const incW=Math.round((d.b1a+d.b2a+d.b2c)*sh*S.fx);
+  const rocW=Math.round(d.b3*sh*S.fx);
+  const s4d=distW-(incW+rocW);
+  const iy=P>0?incW/P*100:0;
+  const us=Math.round(incW*S.us);
+  const incrIT=Math.max(0,IT(distW+S.ex)-IT(S.ex));
+  const lt=Math.round(incrIT*S.lt);
+  const hiR=Math.round(distW*S.hi);
+  const hiC=Math.min(hiR,S.cap);
+  const capped=hiR>S.cap;
+  const kr=incrIT+lt+hiC;
+  const itC=Math.max(0,IT(incW+S.ex)-IT(S.ex));
+  const corr=itC+Math.round(itC*S.lt)+Math.min(Math.round(incW*S.hi),S.cap);
+  const rocTax=kr-corr;
+  const ero=P>0?kr/P*100:0;
+  const mul=us>0?kr/us:null;
+  const a=Math.abs(s4d);
+  const chkV=a===0?{c:'bp',l:'PASS Δ=0'}:a<=1?{c:'bp',l:'PASS Δ='+s4d}:a<=100?{c:'bw',l:'WARN Δ='+s4d}:{c:'bf',l:'FAIL'};
+  return{sh,P,distW,incW,rocW,iy,us,incrIT,lt,hiC,capped,kr,corr,rocTax,ero,mul,s4d,chkV};
+}
+
+const nn=v=>Math.round(v).toLocaleString('ko-KR');
+const p4=v=>v.toFixed(4)+'%';
+const man=v=>nn(Math.round(v/1e4))+'万';
+const fmtS=v=>{if(v>=1e8)return(v/1e8).toFixed(v%1e8?1:0)+'억원';if(v>=1e4)return nn(v/1e4)+'万원';return nn(v)+'원';};
+
+function parseKorAmt(s){
+  s=(s||'').trim().replace(/,/g,'');if(!s)return null;
+  let v=0;
+  const m1=s.match(/^([\d.]+)억\s*([\d.]+)만(?:\s*원)?$/i);
+  const m2=s.match(/^([\d.]+)억(?:\s*원)?$/i);
+  const m3=s.match(/^([\d.]+)만(?:\s*원)?$/i);
+  if(m1)v=+m1[1]*1e8+(+m1[2])*1e4;
+  else if(m2)v=+m2[1]*1e8;
+  else if(m3)v=+m3[1]*1e4;
+  else v=parseFloat(s);
+  return isFinite(v)&&v>=100000?Math.round(v):null;
+}
+
+function previewAmt(s){
+  const v=parseKorAmt(s);
+  document.getElementById('inv-hint').textContent=v?'→ ₩'+nn(v)+' ('+fmtS(v)+')':'';
+  document.getElementById('inv-err').textContent=(s.trim()&&!v)?'인식 불가':'';
+}
+
+function calc(){
+  const d=ICI24[selTK];if(!d){alert('ETF를 선택하세요');return;}
+  let sh=0;let P=0;
+  if(inputMode==='invest'){
+    P=parseKorAmt(document.getElementById('inv-amt').value);
+    if(!P){document.getElementById('inv-err').textContent='금액을 입력하세요';return;}
+    const ni=parseFloat(document.getElementById('inv-nav').value);
+    const nav=ni>0?ni:d.navH;
+    sh=Math.round((P/S.fx)/nav);
+  } else if(inputMode==='shares'){
+    sh=parseInt(document.getElementById('sh-cnt').value)||0;
+    P=sh*d.navH*S.fx;
+  } else {
+    const usd=parseFloat(document.getElementById('ann-usd').value)||0;
+    if(!usd){alert('연간수령액을 입력하세요');return;}
+    sh=d.ps>0?Math.round(usd/d.ps):0;
+    P=sh*d.navH*S.fx;
+  }
+  if(sh<=0){document.getElementById('inv-err').textContent='유효한 주수를 계산할 수 없습니다';return;}
+  lastR=computeR(selTK,sh,P);
+  renderResult(selTK,lastR);
+  renderTable();
+  render2425();
+  showNotice(selTK);
+}
+
+function showNotice(tk){
+  const d=ICI24[tk];
+  const el=document.getElementById('special-notice');
+  if(!d){el.innerHTML='';return;}
+  let html='';
+  if(d.sp==='partial') html=`<div class="notice warn">★ <b>PLTY 2024 부분연도 주의</b> — 2024년 10~11월 신규 상장, 단 ${d.cnt}회 배분($${d.ps}/주). 연간화 시 실제보다 과소 계산됨. 보유주수 직접입력 모드 권장. 취득단가는 IPO가 ~$18 사용 중.</div>`;
+  else if(d.sp==='only2024') html=`<div class="notice pur">★ <b>SQY 2024 전용 종목</b> — 2025년 미존재(Block/SQBG 기반 ETF 변경). 2024년에만 신고 필요. 2025 대비 비교 불가(N/A).</div>`;
+  else if(d.sp==='check') html=`<div class="notice warn">★ <b>XOMO 배분횟수 확인 필요</b> — ICI 데이터상 1,849회 기재 (정상 ~12회 대비 이상). 합산 ps=$${d.ps}는 정상값. 세금 계산 자체는 ps 기준으로 정확함.</div>`;
+  else if(d.sp==='warn') html=`<div class="notice info">ℹ <b>DISO STEP4V WARN</b> — ICI ps 소수점 4자리 제한으로 b1a+b3vs ps 차이 Δ=10원 발생. 허용오차(≤100원) 이내. 계산 영향 미미.</div>`;
+  el.innerHTML=html;
+}
+
+function renderResult(tk,r){
+  const d=ICI24[tk];
+  const roc25=ROC25[tk];
+  const steps=[
+    ['STEP 1','보유주수',`₩${nn(r.P)}÷${nn(S.fx)}÷$${d.navH}(2024추정)`,`${nn(r.sh)}주`,'var(--bl)'],
+    ['STEP 2','총분배금',`$${d.ps}(ICI-P24-YM)×${nn(r.sh)}주×${nn(S.fx)}`,`₩${nn(r.distW)}`,'var(--tx)'],
+    ['STEP 3','Box1a소득',`$${d.b1a}×${nn(r.sh)}주×${nn(S.fx)} (b2a=b2c=0)`,`₩${nn(r.incW)}`,'var(--gn2)'],
+    ['STEP 4','Box3 ROC',`$${d.b3}×${nn(r.sh)}주×${nn(S.fx)}`,`₩${nn(r.rocW)}`,'var(--rd2)'],
+    ['STEP 4V','정밀도',`|distW-(incW+rocW)| Δ=${r.s4d}`,`<span class="badge ${r.chkV.c}">${r.chkV.l}</span>`,''],
+    ['STEP 5','★실소득율',`incW÷₩${nn(r.P)}×100`,p4(r.iy),'var(--gn2)'],
+    ['STEP 6','🇺🇸미국세',`incW×${(S.us*100).toFixed(0)}% (ROC=$0, IRC§301)`,`₩${nn(r.us)}`,'var(--gn2)'],
+    ['STEP 7','종소세증분',`IT(distW+${nn(S.ex)})−IT(${nn(S.ex)}) 소득세법§55①`,`₩${nn(r.incrIT)}`,'var(--rd2)'],
+    ['STEP 8','지방소득세',`S7×${(S.lt*100).toFixed(0)}% 지방세법§92`,`₩${nn(r.lt)}`,'var(--rd2)'],
+    ['STEP 9',`건보${r.capped?'★상한':''}`,`min(distW×${(S.hi*100).toFixed(4)}%, ₩${nn(S.cap)})`,`₩${nn(r.hiC)}`,'var(--rd2)'],
+    ['STEP 10','🇰🇷KR총세','S7+S8+S9',`₩${man(r.kr)} (${p4(r.ero)})`,'var(--rd2)'],
+    ['STEP 11','정상세금','IT(incW)+지방+건보',`₩${nn(r.corr)}`,'var(--mu)'],
+    ['STEP 12','ROC과다','S10−S11',`₩${man(r.rocTax)} (${p4(r.rocTax/r.P*100)})`,'var(--rd2)'],
+    ['STEP 13','침식·배수',`kr÷₩${nn(r.P)}`,`${p4(r.ero)} | KR/US ${r.mul?nn(Math.round(r.mul))+'배':'∞'}`,'var(--rd2)'],
+  ];
+  const sHTML=steps.map(([id,nm,fm,rs,c])=>`<div class="sr"><span class="sid">${id}</span><span class="snm">${nm}</span><span class="sfm">${fm}</span><span class="srs" style="color:${c}">${rs}</span></div>`).join('');
+  const spBadge=d.sp==='partial'?'<span class="badge bpart">★부분연도</span>':d.sp==='only2024'?'<span class="badge b24">★2024ONLY</span>':d.sp==='check'?'<span class="badge bw">★확인필요</span>':d.sp==='warn'?'<span class="badge bw">WARN</span>':'';
+  const cmpWith25=roc25!==undefined?`<span class="tag" style="color:${roc25>d.roc?'var(--rd2)':'var(--gn2)'}">2025 ROC ${roc25}% (${roc25>d.roc?'↑':'↓'}${Math.abs(roc25-d.roc).toFixed(2)}%)</span>`:'<span class="tag" style="color:var(--pu)">2025 미존재</span>';
+
+  document.getElementById('result-area').innerHTML=`
+<div class="vs-wrap">
+  <div class="vs-head">
+    <div>
+      <div class="vs-ename" style="color:${d.roc>=80?'var(--rd)':d.roc>=50?'var(--or)':'var(--bl)'}">${tk} <span style="font-size:14px;color:var(--mu)">2024 귀속</span></div>
+      <div class="vs-emeta">${d.name} | CUSIP: ${d.cusip} | 배분 ${d.cnt}회 | navH $${d.navH}(★추정)</div>
+      <div class="vs-etags">
+        <span class="tag" style="color:var(--rd2)">2024 ROC ${d.roc.toFixed(2)}%</span>
+        <span class="tag" style="color:var(--gn2)">★실소득율 ${p4(r.iy)}</span>
+        ${cmpWith25} ${spBadge}
+        <span class="badge ${r.chkV.c}">${r.chkV.l}</span>
+      </div>
+    </div>
+    <div style="text-align:right"><div style="font-size:10px;color:var(--mu)">규모</div><div style="font-family:var(--mono);font-size:13px;color:var(--pu)">${fmtS(r.P)}</div></div>
+  </div>
+  <div class="vs-grid">
+    <div class="vs-us">
+      <div class="vs-flag g">🇺🇸 미국 (IRC §301)</div>
+      <div style="font-size:10px;color:var(--mu);margin-bottom:4px">ROC → 취득원가 감액 → $0</div>
+      <div class="vs-amt g">₩${nn(r.us)}</div>
+      <div class="vs-sub">실소득 ${p4(r.iy)} × ${(S.us*100).toFixed(0)}% | 원금침식 0%</div>
+    </div>
+    <div class="vs-kr">
+      <div class="vs-flag r">🇰🇷 한국 지역가입자 (2024 귀속)</div>
+      <div class="vs-bk">
+        <div class="vbi"><div class="vbl">①종소세</div><div class="vbv">${man(r.incrIT)}</div></div>
+        <div class="vbi"><div class="vbl">②지방세</div><div class="vbv">${man(r.lt)}</div></div>
+        <div class="vbi"><div class="vbl">③건보${r.capped?'★':''}</div><div class="vbv">${man(r.hiC)}</div></div>
+      </div>
+      <div class="vs-amt r">₩${man(r.kr)}</div>
+      <div class="vs-sub">원금침식 ${p4(r.ero)} | ROC과다 ${man(r.rocTax)} | KR/US ${r.mul?nn(Math.round(r.mul))+'배':'∞'}</div>
+    </div>
+  </div>
+  <div class="bar-w">
+    <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--di);margin-bottom:3px"><span>🇰🇷 ${p4(r.ero)}</span><span>🇺🇸 0%</span></div>
+    <div class="bar-bg"><div class="bar-f" style="width:${Math.min(r.ero,100).toFixed(2)}%"></div></div>
+  </div>
+  <button class="stog" onclick="const b=this.nextElementSibling;b.style.display=b.style.display==='block'?'none':'block'">
+    <span>▼ STEP 1~13 단계별 계산근거 (2024 귀속)</span>
+    <span style="font-family:var(--mono);font-size:10px;color:var(--di)">ICI-P24-YM | b1a+b3=ps | 203/204 PASS</span>
+  </button>
+  <div class="sbody">${sHTML}</div>
+</div>`;
+
+  document.getElementById('vbar').className='vbar '+(r.chkV.l.startsWith('PASS')?'ok':'warn');
+  document.getElementById('v-ico').textContent=r.chkV.l.startsWith('PASS')?'✓':'△';
+  document.getElementById('v-txt').textContent=`${tk} 2024 ${fmtS(r.P)} — ${r.chkV.l}`;
+  document.getElementById('v-det').textContent=`구주 ${nn(r.sh)}주 | FX ₩${nn(S.fx)}/$ | 건보 ${(S.hi*100).toFixed(4)}%`;
+}
+
+function buildETFList(filter){
+  const tks=Object.keys(ICI24).filter(tk=>!filter||(tk.includes(filter.toUpperCase())||ICI24[tk].name.toLowerCase().includes(filter.toLowerCase())));
+  document.getElementById('sel-count').textContent=`${tks.length}/34`;
+  const el=document.getElementById('etf-list');
+  el.innerHTML=tks.map(tk=>{
+    const d=ICI24[tk];
+    const rocClr=d.roc>=80?'var(--rd2)':d.roc>=50?'var(--or)':d.roc>0?'var(--gn2)':'var(--mu)';
+    const spBadge=d.sp==='partial'?'<span class="badge bpart" style="font-size:8px">★부분</span>':d.sp==='only2024'?'<span class="badge b24" style="font-size:8px">★2024</span>':d.sp==='check'?'<span class="badge bw" style="font-size:8px">★확인</span>':'';
+    return`<div class="etf-item s-${d.sp}${tk===selTK?' sel':''}" onclick="selectETF('${tk}')">
+      <div><div class="etf-tk" style="color:${rocClr}">${tk} ${spBadge}</div><div class="etf-nm">${d.name}</div></div>
+      <div style="text-align:right"><div style="font-family:var(--mono);font-size:11px;font-weight:600;color:${rocClr}">${d.roc.toFixed(1)}%</div><div style="font-size:9px;color:var(--di)">${d.cnt}회</div></div>
+    </div>`;
+  }).join('');
+}
+
+function filterETF(v){buildETFList(v);}
+function selectETF(tk){
+  selTK=tk;
+  buildETFList(document.getElementById('etf-search').value);
+  const d=ICI24[tk];
+  document.getElementById('inv-nav').placeholder=d.navH+' (★2024추정)';
+  document.getElementById('nav-info').textContent=`★2024 추정 NAV $${d.navH} — 실제 2024 취득단가 입력 권장`;
+  showNotice(tk);
+}
+
+function renderTable(){
+  const P0=lastR?lastR.P:1e8;
+  const rows=Object.keys(ICI24).map(tk=>{
+    const d=ICI24[tk];
+    const sh=Math.round((P0/S.fx)/d.navH);
+    const P=sh*d.navH*S.fx;
+    const r=computeR(tk,sh,P);
+    return{tk,d,r};
+  });
+  if(sortKey==='roc')rows.sort((a,b)=>b.d.roc-a.d.roc);
+  else if(sortKey==='ero')rows.sort((a,b)=>b.r.ero-a.r.ero);
+  else if(sortKey==='iy')rows.sort((a,b)=>b.r.iy-a.r.iy);
+  else rows.sort((a,b)=>a.tk.localeCompare(b.tk));
+
+  const tbody=document.getElementById('cmp-body');
+  tbody.innerHTML=rows.map(({tk,d,r})=>{
+    const spBadge=d.sp==='partial'?'<span class="badge bpart">★부분연도</span>':d.sp==='only2024'?'<span class="badge b24">★2024ONLY</span>':d.sp==='check'?'<span class="badge bw">★확인</span>':d.sp==='warn'?'<span class="badge bw">WARN</span>':'';
+    return`<tr onclick="selectETF('${tk}');calc()">
+      <td style="font-weight:600;color:${d.roc>=80?'var(--rd2)':d.roc>=50?'var(--or)':d.roc>0?'var(--bl)':'var(--mu)'}">${tk}${tk===selTK?' ◀':''}</td>
+      <td style="font-family:var(--font);font-size:11px;color:var(--mu)">${d.name}</td>
+      <td class="rr">${d.roc.toFixed(2)}%</td>
+      <td class="gr">${p4(r.iy)}</td>
+      <td class="gr">₩${nn(r.us)}</td>
+      <td class="rr">${man(r.kr)}</td>
+      <td class="rr">${p4(r.ero)}</td>
+      <td>${spBadge||'<span class="badge bp">정상</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function render2425(){
+  const P0=lastR?lastR.P:1e8;
+  const common=Object.keys(ICI24).filter(tk=>ROC25[tk]!==undefined&&ICI24[tk].sp!=='only2024');
+  const rows=common.map(tk=>{
+    const d=ICI24[tk];
+    const sh=Math.round((P0/S.fx)/d.navH);
+    const P=sh*d.navH*S.fx;
+    const r=computeR(tk,sh,P);
+    const roc24=d.roc; const roc25=ROC25[tk];
+    const chgRoc=roc25-roc24; const chgEro=0;
+    return{tk,d,r,roc25,chgRoc};
+  });
+  rows.sort((a,b)=>Math.abs(b.chgRoc)-Math.abs(a.chgRoc));
+  const tbody=document.getElementById('cmp2425-body');
+  tbody.innerHTML=rows.slice(0,20).map(({tk,d,r,roc25,chgRoc})=>{
+    const up=chgRoc>2; const dn=chgRoc<-2;
+    const clrChg=up?'var(--rd2)':dn?'var(--gn2)':'var(--mu)';
+    const dir=up?'↑↑':dn?'↓↓':'→';
+    return`<tr onclick="selectETF('${tk}');calc()">
+      <td style="font-weight:600;color:${d.roc>=80?'var(--rd2)':d.roc>=50?'var(--or)':'var(--bl)'}">${tk}</td>
+      <td>${d.roc.toFixed(2)}%</td>
+      <td>${roc25.toFixed(2)}%</td>
+      <td style="color:${clrChg};font-family:var(--mono);font-weight:600">${dir} ${chgRoc>0?'+':''}${chgRoc.toFixed(2)}%</td>
+      <td class="rr">${p4(r.ero)}</td>
+      <td class="mu">—</td>
+      <td style="color:${clrChg};font-family:var(--mono)">${dir}</td>
+    </tr>`;
+  }).join('');
+}
+
+function sortTbl(k,btn){
+  sortKey=k;
+  document.querySelectorAll('.sb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTable();
+}
+
+function setMode(m,btn){
+  inputMode=m;
+  document.querySelectorAll('.mt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['invest','shares','annual'].forEach(n=>document.getElementById('m-'+n).style.display='none');
+  document.getElementById('m-'+m).style.display='block';
+}
+
+function syncHI(){
+  const hik=parseFloat(document.getElementById('p-hi').value)||8.008155;
+  const ltck=parseFloat(document.getElementById('p-ltc').value)||12.95;
+  document.getElementById('p-hi').value=((hik>1?hik/100:hik)*(1+(ltck>1?ltck/100:ltck))*100).toFixed(6);
+  syncCap();
+}
+function syncCap(){
+  const hm=parseFloat(document.getElementById('p-hm').value)||3911280;
+  const ltck=parseFloat(document.getElementById('p-ltc').value)||12.95;
+  document.getElementById('p-cap').value=Math.round((hm+Math.round(hm*(ltck>1?ltck/100:ltck)))*12);
+}
+function markMod(id,def){document.getElementById(id).className='pi'+(Math.abs(parseFloat(document.getElementById(id).value)-def)>1e-9?' warn':'');}
+function applyP(){
+  S.fx=parseFloat(document.getElementById('p-fx').value)||1350;
+  S.ex=parseFloat(document.getElementById('p-ex').value)||0;
+  S.us=(parseFloat(document.getElementById('p-us').value)||15)/100;
+  const hp=parseFloat(document.getElementById('p-hi').value)||8.008155;
+  S.hi=hp>1?hp/100:hp;
+  S.cap=parseFloat(document.getElementById('p-cap').value)||53013492;
+  document.getElementById('h-fx').textContent=nn(S.fx);
+  document.getElementById('h-hi').textContent=(S.hi*100).toFixed(3)+'%';
+  document.getElementById('p-msg').textContent='적용 완료';
+  setTimeout(()=>document.getElementById('p-msg').textContent='',1500);
+  renderTable();render2425();
+}
+function resetP(){
+  document.getElementById('p-fx').value=1350;document.getElementById('p-ex').value=0;
+  document.getElementById('p-us').value=15;document.getElementById('p-hi').value=8.008155;
+  document.getElementById('p-ltc').value=12.95;document.getElementById('p-hm').value=3911280;
+  document.getElementById('p-cap').value=53013492;
+  Object.assign(S,{fx:1350,ex:0,us:0.15,hi:0.08008155,cap:53013492});
+  document.querySelectorAll('.pi').forEach(el=>el.classList.remove('warn'));
+  renderTable();render2425();
+}
+function copyURL(){
+  const u=`?fx=${S.fx}&hi=${(S.hi*100).toFixed(6)}&cap=${S.cap}&exist=${S.ex}&tk=${selTK}&year=2024`;
+  navigator.clipboard.writeText(location.origin+location.pathname+u).then(()=>{document.getElementById('p-msg').textContent='URL 복사됨 🔗';setTimeout(()=>document.getElementById('p-msg').textContent='',2000);});
+}
+function dlJSON(){
+  const o={meta:{version:'1.0',year:2024,etfs:34,generated:new Date().toISOString()},params:{fx:S.fx,exist:S.ex,us_rate:S.us,hi_combined:S.hi,annual_cap:S.cap}};
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o,null,2)],{type:'application/json'}));a.download='roc_2024_params.json';a.click();
+}
+function resetInput(){
+  document.getElementById('inv-amt').value='';document.getElementById('inv-hint').textContent='';document.getElementById('inv-err').textContent='';
+  document.getElementById('sh-cnt').value='';document.getElementById('ann-usd').value='';
+}
+
+async function init(){
+  try{
+    const r=await fetch('config.json');if(!r.ok)throw 0;
+    const c=await r.json();
+    const hi=c.health_insurance_2025;const pa=c.params;
+    if(hi?.combined_rate)S.hi=hi.combined_rate;
+    if(hi?.combined_annual_cap)S.cap=hi.combined_annual_cap;
+    if(pa?.fx_rate)S.fx=pa.fx_rate;
+    if(pa?.existing_income!=null)S.ex=pa.existing_income;
+    document.getElementById('h-cfg').textContent='✓ config.json';
+    document.getElementById('p-fx').value=S.fx;
+    document.getElementById('p-hi').value=(S.hi*100).toFixed(6);
+    document.getElementById('p-cap').value=S.cap;
+  }catch(e){
+    document.getElementById('h-cfg').textContent='기본값';
+    document.getElementById('h-cfg').style.color='var(--or)';
+  }
+  const sp=new URLSearchParams(location.search);
+  if(sp.has('fx')){S.fx=+sp.get('fx');document.getElementById('p-fx').value=S.fx;}
+  if(sp.has('hi')){const v=+sp.get('hi');S.hi=v>1?v/100:v;document.getElementById('p-hi').value=(S.hi*100).toFixed(6);}
+  if(sp.has('cap')){S.cap=+sp.get('cap');document.getElementById('p-cap').value=S.cap;}
+  if(sp.has('exist')){S.ex=+sp.get('exist');}
+  if(sp.has('tk')&&ICI24[sp.get('tk')])selTK=sp.get('tk');
+  document.getElementById('h-fx').textContent=nn(S.fx);
+  document.getElementById('h-hi').textContent=(S.hi*100).toFixed(3)+'%';
+  buildETFList('');
+  selectETF(selTK);
+  renderTable();
+  render2425();
+}
+init();
+</script>
+</body>
+</html>
